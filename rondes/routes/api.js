@@ -22,10 +22,10 @@ router.get('/', function(req, res, next) {
 	
 	var err = false;
 	// Vérifier que l'id_tag est affecté à un garde
-	connection.query('SELECT g.id FROM garde g WHERE g.id_tag = ?', [dataP], function(err, rows, fields) {
+	connection.query('SELECT g.id_garde FROM garde g WHERE g.id_tag = ?', [dataP], function(err, rows, fields) {
 	  if (!err) {
-		console.log('Got Garde: ', rows[0].id);
-		var garde_id = rows[0].id;
+		console.log('Got Garde: ', rows[0].id_garde);
+		var garde_id = rows[0].id_garde;
 		
 		// Vérifier que l'id du PDC existe.
 		connection.query('SELECT pdc.id_pdc, pdc.id_ronde FROM pointDeControle pdc WHERE p.id_pdc = ?', [idP], function(err, rows, fields) {
