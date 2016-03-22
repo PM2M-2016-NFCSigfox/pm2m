@@ -1,5 +1,25 @@
 extends layout
 
+var err = #{error}
+
 block content
-  h1= title
-  p Recieved #{data} from #{id} at #{time}
+	h1= title
+	.table-responsive
+		table.table.table-striped.table-bordered(style="width: auto !important;")
+			tbody
+				tr
+					th Data
+					td #{data}
+				tr
+					th From
+					td #{id}
+				tr
+					th Time
+					td #{time}
+				unless err
+					tr
+						th Error
+						td #{error}
+				
+				
+
