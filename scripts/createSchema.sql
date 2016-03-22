@@ -19,7 +19,7 @@ create table pointDeControle(
 id_pdc VARCHAR(32) PRIMARY KEY,
 label_pdc VARCHAR(64) NOT NULL,
 num_piece VARCHAR(64) NOT NULL,
-id_ronde INT(8) UNSIGNED NOT NULL,
+id_ronde INT(8) UNSIGNED,
 FOREIGN KEY (id_ronde) REFERENCES ronde(id_ronde)
 ); 
 
