@@ -96,6 +96,8 @@ router.get('/', function(req, res, next) {
 
         connection.end();
 
+    } else {
+      display_error("Invalid parameters")
     }
 
 });
