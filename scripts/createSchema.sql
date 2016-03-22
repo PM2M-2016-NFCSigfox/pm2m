@@ -35,7 +35,7 @@ id_garde INT(8) UNSIGNED NOT NULL,
 id_pdc VARCHAR(32) NOT NULL,
 id_ronde_x_date INT(8) UNSIGNED NOT NULL,
 date_badgeage DATETIME,
-PRIMARY KEY (id_garde, date_badgeage),
+PRIMARY KEY (id_garde, id_pdc, id_ronde_x_date, date_badgeage),
 FOREIGN KEY (id_garde) REFERENCES garde(id_garde),
 FOREIGN KEY (id_pdc) REFERENCES pointDeControle(id_pdc),
 FOREIGN KEY (id_ronde_x_date) REFERENCES rondeXDate(id_ronde_x_date)
