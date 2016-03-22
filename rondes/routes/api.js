@@ -21,6 +21,12 @@ router.get('/', function(req, res, next) {
     var timeP = req.query.time;
     var err = null;
 
+    console.log("Got ", {
+        id: idP,
+        data: dataP,
+        time: timeP
+    })
+
     if (idP && dataP && timeP) {
 
 
