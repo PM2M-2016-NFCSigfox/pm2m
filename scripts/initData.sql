@@ -1,5 +1,5 @@
-insert into garde (id_garde, nom, id_tag) values (1, 'Didier', '04364FBA342380'),
-(2, 'John', '043365BA342380');
+insert into garde (id_garde, nom, id_tag) values (1, 'Didier', '04F05A59127A00'),
+(2, 'John', 'EB4AF3MB');
 
 insert into ronde (id_ronde, id_garde) values (1, 1),
 (2, 1),
