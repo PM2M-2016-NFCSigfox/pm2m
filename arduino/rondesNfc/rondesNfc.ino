@@ -1,10 +1,10 @@
+
+#define DELAY_BETWEEN_MESSAGES 10000
 #include <Akeru.h>
 
 #include <Adafruit_PN532.h>
 #include <SPI.h>
 #include <SoftwareSerial.h>
-
-#define DELAY_BETWEEN_MESSAGES 66000
 
 #define PN532_CS 10 // La pin CS peut être connectée à la sortie D9 ou D10.
 Adafruit_PN532 nfc(PN532_CS);
@@ -17,7 +17,6 @@ void setup()
     // Init modem
     Akeru.begin();
     Serial.println("Bonjour!");
-
 #endif
     nfc.begin(); // Démarrage puce PN532.
 
@@ -46,6 +45,15 @@ void setup()
 
 void loop()
 {
+
+    // Attente de disponiblité (envoi d'un messages toutes les 11 minutes : 140 messages par jour max)
+    while (!Akeru.isReady()) {
+        Serial.println("Modem en mode attente.");
+        delay(2500);
+    }
+
+    Serial.println("Modem OK");
+
     uint8_t uid[] = { 0, 0, 0, 0, 0, 0, 0 }; // Buffer pour stocker l'UID NFC
     uint8_t uidLength; // Taille de l'UID (4 or 7 octets)
 
@@ -64,12 +72,6 @@ void loop()
         }
         Serial.println("");
 
-        // Attente de disponiblité (envoi d'un messages toutes les 11 minutes : 140 messages par jour max)
-        while (!Akeru.isReady()) {
-            Serial.println("Modem en mode attente.");
-            delay(1000);
-        }
-
         // Envoyer les données
         if (Akeru.send(uid, uidLength)) {
             Serial.println("Send OK");
@@ -77,8 +79,13 @@ void loop()
         else {
             Serial.println("Send NOK");
         }
+        Serial.print("Mode attente pendant ");
+        Serial.print(DELAY_BETWEEN_MESSAGES);
+        Serial.println("ms.");
+        delay(DELAY_BETWEEN_MESSAGES);
     }
     else {
         Serial.println("Timed out waiting for a card");
     }
 }
+
