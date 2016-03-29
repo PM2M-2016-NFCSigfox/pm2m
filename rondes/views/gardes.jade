@@ -1,0 +1,19 @@
+extends layout
+
+block content
+  h1= 'Gestion des gardiens'
+  .table-responsive
+    table.table.table-striped.table-bordered(style="width: auto !important;")
+      thead
+        tr
+          th Garde
+          th Tag NFC
+          th Rondes
+          th Dernier badgage
+      tbody
+        for garde in gardes
+          tr
+            td #{garde.nom}
+            td #{garde.nfc}
+            td #{garde.rondes}
+            td #{garde.dernierBadgeage}
