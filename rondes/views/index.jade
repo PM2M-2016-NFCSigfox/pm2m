@@ -1,5 +1,20 @@
 extends layout
 
 block content
-  h1= title
-  p Welcome to #{title}
+    .panel.panel-primary
+        .panel-heading #{title}&nbsp;&nbsp;
+            button.btn.btn-success.btn-sm
+                span.glyphicon.glyphicon-plus
+        table.table.table-striped.table-bordered
+            thead
+                th.col-md-4 id de la ronde
+                th.col-md-4 date de la ronde
+                th.col-md-4 Etat
+            tbody
+                each ronde in data
+                    tr
+                        td #{ronde.id_ronde}
+                        td #{ronde.date_ronde}
+                        td #{ronde.state}
+                unless err
+                    p #{error}

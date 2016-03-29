@@ -25,7 +25,7 @@ router.get('/', function(req, res, next) {
         id: idP,
         data: dataP,
         time: timeP
-    })
+    });
 
     if (idP && dataP && timeP) {
 
