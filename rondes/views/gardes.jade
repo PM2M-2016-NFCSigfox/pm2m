@@ -1,25 +1,139 @@
 extends layout
 
 block content
+    div.modal.modal-dialog.modal-sm.fade(id="addGarde")
+        .modal-content
+            .modal-header
+                button(type="button", class="close", data-dismiss="modal") x
+                h3 Ajouter un garde
+            .modal-body
+                form#addForm.form-signin(action="/addGarde", method="post")
+                    input.form-control(type="text", name="nom", placeholder="Nom du garde", required)
+                    input.form-control(type="text", name="nfc", placeholder="NFC Tag ID", required)
+                    div.form-group(style='text-align:center;')
+                        button.btn.btn-large.btn-primary(type="submit")
+                            span.glyphicon.glyphicon-ok-circle
+                        button.btn.btn-large.btn-danger(data-dismiss="modal")
+                            span.glyphicon.glyphicon-remove-circle
+             .modal-footer
+
+    div.modal.modal-dialog.modal-sm.fade(id="removeGarde")
+        .modal-content
+            .modal-header
+                button(type="button", class="close", data-dismiss="modal") x
+                h3 Supprimer un garde
+            .modal-body(style='text-align:center;')
+                button.btn.btn-danger.delete(type="button", data-radio-name="radio")
+                    span.glyphicon.glyphicon-ok
+                button.btn.btn-primary.active(type="button",data-radio-name="radio", data-dismiss="modal")
+                    span.glyphicon.glyphicon-remove
+            .modal-footer
+
     .panel.panel-primary
         .panel-heading #{title}&nbsp;&nbsp;
-            button.btn.btn-success.btn-sm
+            button.btn.btn-success.btn-sm(data-toggle="modal", href="#addGarde")
                 span.glyphicon.glyphicon-plus
-        table.table.table-striped.table-bordered
+        table.vertical-align.table.table-striped.table-bordered
           thead
             tr
               th Garde
               th Tag NFC
-              th QR Code
-              th Rondes
-              th Dernier badgage
+              th Rondes affectées
+              th Dernière activité
+              th
           tbody
             for garde in gardes
               tr
                 td #{garde.nom}
-                td #{garde.nfc}
                 td
-                  a(href='data:img/png;base64,#{garde.nfcQr}' download='QRCode_#{garde.nfc}.png')
+                  a(href='data:img/png;base64,#{garde.nfcQr}' download='QRCode_#{garde.nfc}.png' title='#{garde.nfc}')
                     img(width=50, alt='#{garde.nfc}', src='data:img/png;base64,#{garde.nfcQr} ')
-                td #{garde.rondes}
-                td #{garde.dernierBadgeage}
+                  span(style='margin-left:5px; font-family:Courier,monospace;') #{garde.nfc}
+                td
+                    ul
+                        for ronde in garde.rondes
+                            li #{ronde}
+                if garde.dernierBadgeage
+                    td #{garde.dernierBadgeage}
+                else
+                    td N/D
+                td
+                    button.btn.btn-danger.btn-sm(data-toggle="modal", href="#removeGarde", data-id="#{garde.id}", data-name="#{garde.nom}")
+                        span.glyphicon.glyphicon-minus
+    a(href='/') Retourner à l'index.
+    script.
+        $(document).ready(function() {
+            // Lorsque je soumets le formulaire
+            $('#addForm').on('submit', function(e) {
+                e.preventDefault(); //J'empêche le comportement par défaut du navigateur, c-à-d de soumettre le formulaire
+
+                var $this = $(this); // L'objet jQuery du formulaire
+
+                // Je récupère les valeurs
+                var nomP = $this.find('input[name="nom"]').val();
+                var nfcP = $this.find('input[name="nfc"]').val();
+
+                if(nomP === '' || nfcP === '') {
+                    $this.validate({ // initialize the plugin
+                        rules: {
+                            nom: {
+                                required: true
+                            },
+                            nfc: {
+                                required: true
+                            }
+                        }
+                    });
+                } else {
+                    // Envoi de la requête HTTP en mode asynchrone
+                    $.ajax({
+                        url: $this.attr('action'), // Le nom du fichier indiqué dans le formulaire
+                        type: $this.attr('method'), // La méthode indiquée dans le formulaire (get ou post)
+                        data: {nom: nomP, nfc : nfcP}, // Je sérialise les données (j'envoie toutes les valeurs présentes dans le formulaire)
+                        success: function(html) { // Je récupère la réponse
+                            if (html==='OK') {
+                                $('#addGarde').modal('hide');
+                                location.reload();
+                            } else {
+                                alert(html);
+                            }
+                        }
+                    });
+                }
+            });
+        });
+        $('#removeGarde').on('show.bs.modal', function(e) {
+            var garde_id = e.relatedTarget.dataset.id;
+            var garde_nom = e.relatedTarget.dataset.name;
+
+            var modal = $(this);
+            modal.find('.modal-header').find('h3').html('Supprimer <strong>'+garde_nom+"</strong>?");
+
+            $('.delete').on('click', function(e) {
+                $.ajax({
+                    url: '/removeGarde', // Le nom du fichier indiqué dans le formulaire
+                    type: 'POST', // La méthode indiquée dans le formulaire (get ou post)
+                    data: {idgarde: garde_id}, // Je sérialise les données (j'envoie toutes les valeurs présentes dans le formulaire)
+                    success: function(html) { // Je récupère la réponse
+                        if (html==='OK') {
+                            modal.modal('hide');
+                            location.reload();
+                        } else {
+                            alert(JSON.stringify(html));
+                        }
+                    }
+                });
+            });
+
+        });
+        jQuery.fn.shake = function(intShakes, intDistance, intDuration) {
+            this.each(function() {
+                $(this).css("position","relative");
+                for (var x=1; x<=intShakes; x++) {
+                $(this).animate({left:(intDistance*-1)}, (((intDuration/intShakes)/4)))
+            .animate({left:intDistance}, ((intDuration/intShakes)/2))
+            .animate({left:0}, (((intDuration/intShakes)/4)));
+            }
+          });
+        return this;
+        };

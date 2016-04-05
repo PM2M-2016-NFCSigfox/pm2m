@@ -11,6 +11,7 @@ PRIMARY KEY (id_garde)
 
 create table ronde(
 id_ronde INT(8) UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+nom_ronde VARCHAR(50) NOT NULL,
 id_garde INT(8) UNSIGNED,
 FOREIGN KEY (id_garde) REFERENCES garde(id_garde)
 );

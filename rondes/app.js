@@ -9,6 +9,8 @@ var routes = require('./routes/index');
 var users = require('./routes/users');
 var api = require('./routes/api');
 var gardes = require('./routes/gardes');
+var gardeAdd = require('./routes/addGarde');
+var gardeRem = require('./routes/removeGarde');
 
 var app = express();
 
@@ -28,6 +30,8 @@ app.use('/', routes);
 app.use('/users', users);
 app.use('/api', api);
 app.use('/gardes', gardes);
+app.use('/addGarde', gardeAdd);
+app.use('/removeGarde', gardeRem);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {
@@ -54,6 +58,7 @@ if (app.get('env') === 'development') {
 // no stacktraces leaked to user
 app.use(function(err, req, res, next) {
   res.status(err.status || 500);
+  console.log(err);
   res.render('error', {
     message: err.message,
     error: {}

@@ -38,22 +38,24 @@ router.get('/', function(req, res, next) {
         if (err) display_error(err);
         else {
             rows.forEach(function(garde) {
-                connection.query('SELECT r.id_ronde FROM ronde r WHERE r.id_garde = ?', [garde.id_garde], function(emp_err, emp_rows, emp_fields) {
+                connection.query('SELECT r.nom_ronde FROM ronde r WHERE r.id_garde = ?', [garde.id_garde], function(emp_err, emp_rows, emp_fields) {
                     if (emp_err) {
                       console.log('article each callback '+emp_err);
                     } else {
                         var rondesDuGarde = []
-                        for (var e in emp_rows) {
-                            rondesDuGarde.push(e);
-                        }
+                        emp_rows.forEach(function (ronde) {
+                            rondesDuGarde.push(ronde.nom_ronde);
+                        });
+
                         var gardeJson = {
+                            id: garde.id_garde,
                             nom: garde.nom,
                             nfc: garde.id_tag,
                             nfcQr : qr.imageSync(garde.id_tag, { type: 'png' }).toString('base64'),
                             rondes: rondesDuGarde,
                             dernierBadgeage: garde.date_badgeage != null? moment(garde.date_badgeage).locale("fr").format("DD MMMM YYYY") : ""
                         }
-                        console.log("Session: %j", gardeJson);
+
                         gardesArray.push(gardeJson);
                         if (gardesArray.length == rows.length) {
                             callback(gardesArray);
