@@ -1,19 +1,25 @@
 extends layout
 
 block content
-  h1= 'Gestion des gardiens'
-  .table-responsive
-    table.table.table-striped.table-bordered(style="width: auto !important;")
-      thead
-        tr
-          th Garde
-          th Tag NFC
-          th Rondes
-          th Dernier badgage
-      tbody
-        for garde in gardes
-          tr
-            td #{garde.nom}
-            td #{garde.nfc}
-            td #{garde.rondes}
-            td #{garde.dernierBadgeage}
+    .panel.panel-primary
+        .panel-heading #{title}&nbsp;&nbsp;
+            button.btn.btn-success.btn-sm
+                span.glyphicon.glyphicon-plus
+        table.table.table-striped.table-bordered
+          thead
+            tr
+              th Garde
+              th Tag NFC
+              th QR Code
+              th Rondes
+              th Dernier badgage
+          tbody
+            for garde in gardes
+              tr
+                td #{garde.nom}
+                td #{garde.nfc}
+                td
+                  a(href='data:img/png;base64,#{garde.nfcQr}' download='QRCode_#{garde.nfc}.png')
+                    img(width=50, alt='#{garde.nfc}', src='data:img/png;base64,#{garde.nfcQr} ')
+                td #{garde.rondes}
+                td #{garde.dernierBadgeage}

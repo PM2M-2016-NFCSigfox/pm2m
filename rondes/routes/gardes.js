@@ -1,6 +1,8 @@
 var express = require('express');
 var async = require('async');
 var config = require('../conf.json');
+var moment = require('moment');
+var qr = require('qr-image');
 var router = express.Router();
 
 /* GET home page. */
@@ -30,6 +32,7 @@ router.get('/', function(req, res, next) {
       });
     }
 
+
     // Vérifier que l'id_tag est affecté à un garde
     connection.query('SELECT g.*, b.date_badgeage FROM garde g LEFT JOIN badgeage b ON g.id_garde = b.id_garde WHERE b.date_badgeage = (SELECT max(bb.date_badgeage) FROM badgeage bb WHERE bb.id_garde = b.id_garde) OR b.date_badgeage IS NULL ORDER BY g.nom ASC', [], function(err, rows, fields) {
         if (err) display_error(err);
@@ -46,8 +49,9 @@ router.get('/', function(req, res, next) {
                         var gardeJson = {
                             nom: garde.nom,
                             nfc: garde.id_tag,
+                            nfcQr : qr.imageSync(garde.id_tag, { type: 'png' }).toString('base64'),
                             rondes: rondesDuGarde,
-                            dernierBadgeage: garde.date_badgeage
+                            dernierBadgeage: garde.date_badgeage != null? moment(garde.date_badgeage).locale("fr").format("DD MMMM YYYY") : ""
                         }
                         console.log("Session: %j", gardeJson);
                         gardesArray.push(gardeJson);
