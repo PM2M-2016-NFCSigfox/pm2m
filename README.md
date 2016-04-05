@@ -7,8 +7,7 @@ For the Akeru you need to use a the Arduino IDE and the following libraries
 * Akeru
 
 On the server side you will need nodejs and npm installed. 
-* Node
-* 
+
 ### Usage
 For the NFC tag part, just plug-in the Akeru to a power source and pass the NFC tag.
 For the server side part, go to the <code>/rondes</code> directory, and execute the following commands:
