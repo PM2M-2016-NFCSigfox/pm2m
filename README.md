@@ -10,7 +10,7 @@ On the server side you will need nodejs and npm installed.
 
 ### Usage
 For the NFC tag part, just plug-in the Akeru to a power source and pass the NFC tag.
-For the server side part, go to the <code>/rondes</code> directory, and execute the following commands:
+For the server side part, set up the database using the script in <code>/scripts/init.sql</code> (optionaly, you can add some dummy data with the script <code>/scripts/data.sql</code>), then go to the <code>/rondes</code> directory, and execute the following commands:
 ```
 npm install
 npm start
