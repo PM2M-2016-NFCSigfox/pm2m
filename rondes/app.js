@@ -8,6 +8,8 @@ var bodyParser = require('body-parser');
 var routes = require('./routes/index');
 var users = require('./routes/users');
 var api = require('./routes/api');
+var rondeXdateRem = require('./routes/removeRondeXDate');
+var rondeXdateAdd = require('./routes/addRondeXDate');
 var gardes = require('./routes/gardes');
 var gardeAdd = require('./routes/addGarde');
 var gardeRem = require('./routes/removeGarde');
@@ -32,6 +34,8 @@ app.use('/api', api);
 app.use('/gardes', gardes);
 app.use('/addGarde', gardeAdd);
 app.use('/removeGarde', gardeRem);
+app.use('/planRonde', rondeXdateAdd);
+app.use('/removePlannedRonde', rondeXdateRem);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

@@ -46,6 +46,7 @@ router.get('/', function (req, res, next) {
                                     state = "TODO";
                                 }
                                 result.push({
+                                    id_ronde_x_date: ronde.id_ronde_x_date,
                                     id_ronde: ronde.id_ronde,
                                     date_ronde: ronde.date_ronde.toDateString(),
                                     state: state
