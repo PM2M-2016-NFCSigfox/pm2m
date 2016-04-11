@@ -89,14 +89,14 @@ L’application web est composée de deux écrans, un premier écran de gestion 
 
 ######Écran de gestion des rondes
 
-<img alt="" src="Gestion_rondes_sigfox_2016.png" align="middle"/>
+<img alt="" src="images/Gestion_rondes_sigfox_2016.png" align="middle"/>
 
 L’écran de gestion des rondes est composé de deux tableaux. Le premier tableau présente les rondes disponibles ainsi que le gardien affecté à chaque ronde. Pour chaque ronde il est possible de la planifier à l’aide du bouton du bouton prévu à cette effet. Une fois planifier la ronde apparaît dans le tableau suivant qui permet de gérer la planification des rondes. Ce dernier est la liste des rondes planifiée avec leur état (OK si la ronde est terminée pour que le gestionnaire puisse voir rapidement l’état de chaque ronde).
 En bas de l’écran un liens permet d'accéder à l’écran de gestion des gardes.
 
 ######Écran de gestion des gardes
 
-<img alt="" src="Gestion_gardes_sigfox_2016.png" align="middle"/>
+<img alt="" src="images/Gestion_gardes_sigfox_2016.png" align="middle"/>
 
 L’écran de gestion des gardes est composé d’un tableau listant la totalité des gardes existants. L’en-tête du tableau comporte un bouton ajouter qui permets d’ajouter un garde. Chaque ligne du tableau résume les informations d’un garde (nom, tag NFC, rondes affectées et la dernières activités). Pour chaque garde il est également possible de le supprimer à l’aide du bouton “-” présent pour chaque garde.
 En bas de l’écran un liens permet le retour vers l’écran de gestion des rondes.
@@ -105,8 +105,8 @@ En bas de l’écran un liens permet le retour vers l’écran de gestion des ro
 Pour conclure notre application reprend les fonctionnalités de bases nécessaire à son fonctionnement. Cependant nous aurions aimé pouvoir testé avec plusieurs points de contrôles afin de tester de façon plus complète son fonctionnement et pouvoir l’améliorer. Pour la suite nous envisageons de développer plus de fonctionnalités pour l’application web (ajout et modification d’une ronde, modification d’un garde ainsi qu’une partie de reporting) et également revoir l’interface graphique qui actuellement est fonctionnelle mais qui peut être améliorée.
 
 ###Photos
-<img alt="" src="Carte_akeru_sigfox_2016.jpg" align="middle"/>
+<img alt="" src="images/Carte_akeru_sigfox_2016.jpg" align="middle"/>
 
-<img alt="" src="Shield_nfc_sigfox_2016.jpg" align="middle"/>
+<img alt="" src="images/Shield_nfc_sigfox_2016.jpg" align="middle"/>
 
-<img alt="" src="Tags_sigfox_2016.jpg" align="middle"/>
+<img alt="" src="images/Tags_sigfox_2016.jpg" align="middle"/>
