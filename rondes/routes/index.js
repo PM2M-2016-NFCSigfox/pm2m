@@ -29,51 +29,77 @@ router.get('/', function (req, res, next) {
     });
 
     connection.connect();
-    var result = [];
-    connection.query('SELECT * FROM rondeXDate', [], function (err, rondesXDate, fields) {
-        if (!err) {
-            rondesXDate.forEach(function (ronde) {
-                connection.query('SELECT count(id_pdc) as nb_pdc FROM pointDeControle WHERE id_ronde = ?', [ronde.id_ronde], function (err, nb_pdc, fields) {
-                    if (!err) {
-                        connection.query('SELECT count(id_pdc) as nb_badgeage FROM badgeage WHERE date_badgeage = ?', [ronde.date_ronde], function (err, rows, fields) {
-                            if(!err) {
-                                var state = "";
-                                if (nb_pdc[0].nb_pdc == rows[0].nb_badgeage) {
-                                    state = "OK";
-                                } else if (rows.nb_badgeage > 0) {
-                                    state = "WIP";
-                                } else {
-                                    state = "TODO";
-                                }
-                                result.push({
-                                    id_ronde_x_date: ronde.id_ronde_x_date,
-                                    id_ronde: ronde.id_ronde,
-                                    date_ronde: ronde.date_ronde.toDateString(),
-                                    state: state
-                                });
-                            }else{
-                                display_error(err);
-                            }
-                            if(result.length==rondesXDate.length){
-                                callback(result);
-                            }
-                        });
-                    }else{
-                        display_error(err);
+    var plannedRondes = [];
+    var rondes = [];
+    var infoRondes = {};
+
+    connection.query('SELECT * FROM ronde', [], function (err, rondesQ, fields) {
+        rondesQ.forEach(function (rondeQ) {
+            infoRondes[rondeQ.id_ronde] = rondeQ;
+            connection.query('SELECT nom FROM garde WHERE id_garde = ?', [rondeQ.id_garde], function (err, nomGarde, fileds) {
+                if (!err) {
+                    rondes.push({
+                        id_ronde: rondeQ.id_ronde,
+                        nom_ronde: rondeQ.nom_ronde,
+                        nom_garde: nomGarde[0].nom
+                    });
+                    if (rondes.length == rondesQ.length) {
+                        getRondeXdate();
                     }
-                });
+                } else {
+                    display_error(err);
+                }
             });
-        } else {
-            display_error(err);
-        }
+        });
     });
 
-    function callback(result){
+    function callback(plannedRondes, rondes) {
         res.render('index', {
             title: 'Gestion des rondes',
-            data: result
+            plannedRondes: plannedRondes,
+            rondes: rondes
         });
         connection.end();
+    }
+
+    function getRondeXdate() {
+        connection.query('SELECT * FROM rondeXDate', [], function (err, rondesXDate, fields) {
+            if (!err) {
+                rondesXDate.forEach(function (ronde) {
+                    connection.query('SELECT count(id_pdc) as nb_pdc FROM pointDeControle WHERE id_ronde = ?', [ronde.id_ronde], function (err, nb_pdc, fields) {
+                        if (!err) {
+                            connection.query('SELECT count(id_pdc) as nb_badgeage FROM badgeage WHERE date_badgeage = ?', [ronde.date_ronde], function (err, rows, fields) {
+                                if (!err) {
+                                    var state = "";
+                                    if (nb_pdc[0].nb_pdc == rows[0].nb_badgeage) {
+                                        state = "OK";
+                                    } else if (rows.nb_badgeage > 0) {
+                                        state = "WIP";
+                                    } else {
+                                        state = "TODO";
+                                    }
+                                    plannedRondes.push({
+                                        id_ronde_x_date: ronde.id_ronde_x_date,
+                                        nom_ronde: infoRondes[ronde.id_ronde].nom_ronde,
+                                        date_ronde: ronde.date_ronde.toDateString(),
+                                        state: state
+                                    });
+                                } else {
+                                    display_error(err);
+                                }
+                                if (plannedRondes.length == rondesXDate.length) {
+                                    callback(plannedRondes, rondes);
+                                }
+                            });
+                        } else {
+                            display_error(err);
+                        }
+                    });
+                });
+            } else {
+                display_error(err);
+            }
+        });
     }
 });
 

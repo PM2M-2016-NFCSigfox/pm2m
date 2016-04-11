@@ -1,16 +1,14 @@
 extends layout
 
-
-
 block content
-    div.modal.modal-dialog.modal-sm.fade(id="addRonde")
+    div.modal.modal-dialog.modal-sm.fade(id="planRonde")
         .modal-content
             .modal-header
                 button(type="button", class="close", data-dismiss="modal") x
                 h3 Plannifier une ronde
             .modal-body
                 form#addForm.form-signin(action="/planRonde", method="post")
-                    input.form-control(type="text", name="ronde", placeholder="Ronde", required)
+                    input.form-control(type="hidden", name="idRonde", required)
                     input.form-control(type="date", name="date", placeholder="Date", required)
                     div.form-group(style='text-align:center;')
                         button.btn.btn-large.btn-primary(type="submit")
@@ -32,9 +30,26 @@ block content
             .modal-footer
 
     .panel.panel-primary
+        .panel-heading Rondes&nbsp;&nbsp;
+        table.table.table-striped.table-bordered
+            thead
+                th.col-md-3 Nom de la ronde
+                th.col-md-3 Nom du garde
+                th.col-md-3 Action
+            tbody
+                each ronde in rondes
+                    tr
+                        td #{ronde.nom_ronde}
+                        td #{ronde.nom_garde}
+                        td
+                            button.btn.btn-success.btn-sm(data-toggle="modal", href="#planRonde", data-id="#{ronde.id_ronde}")
+                                span.glyphicon.glyphicon-plus
+                                span &nbsp;Plannifier
+                unless err
+                    p #{error}
+
+    .panel.panel-primary
         .panel-heading #{title}&nbsp;&nbsp;
-            button.btn.btn-success.btn-sm(data-toggle="modal", href="#addRonde")
-                span.glyphicon.glyphicon-plus
         table.table.table-striped.table-bordered
             thead
                 th.col-md-3 id de la ronde
@@ -42,13 +57,17 @@ block content
                 th.col-md-3 Etat
                 th.col-md-3 Action
             tbody
-                each ronde in data
+                each plannedRonde in plannedRondes
                     tr
-                        td #{ronde.id_ronde}
-                        td #{ronde.date_ronde}
-                        td #{ronde.state}
+                        td #{plannedRonde.nom_ronde}
+                        td #{plannedRonde.date_ronde}
                         td
-                            button.btn.btn-danger.btn-sm(data-toggle="modal", href="#removePlannedRonde", data-id="#{ronde.id_ronde_x_date}", data-date="#{ronde.date_ronde}")
+                            if plannedRonde.state=="OK"
+                                span.label.label-success #{plannedRonde.state}
+                            else
+                                span.label.label-primary #{plannedRonde.state}
+                        td
+                            button.btn.btn-danger.btn-sm(data-toggle="modal", href="#removePlannedRonde", data-id="#{plannedRonde.id_ronde_x_date}", data-date="#{plannedRonde.date_ronde}")
                                 span.glyphicon.glyphicon-minus
                 unless err
                     p #{error}

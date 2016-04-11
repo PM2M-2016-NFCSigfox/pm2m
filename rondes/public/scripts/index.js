@@ -1,37 +1,34 @@
 $(document).ready(function () {
+
     // Lorsque je soumets le formulaire
-    $('#addRonde').on('submit', function (e) {
+    $('#planRonde').on('show.bs.modal', function (e) {
+        $('input[name="idRonde"]').val(e.relatedTarget.dataset.id);
+    });
+
+    $('#addForm').on('submit', function (e) {
         e.preventDefault(); //J'empêche le comportement par défaut du navigateur, c-à-d de soumettre le formulaire
-
         var $this = $(this); // L'objet jQuery du formulaire
-
         // Je récupère les valeurs
         var date = $this.find('input[name="date"]').val();
-        var idRonde = $this.find('input[name="ronde"]').val();
+        var id_ronde = $this.find('input[name="idRonde"]').val();
 
-        console.log(date, idRonde);
-
-        if (!date || !idRonde) {
+        if (!date) {
             $this.validate({ // initialize the plugin
                 rules: {
                     date: {
-                        required: true
-                    },
-                    idRonde: {
                         required: true
                     }
                 }
             });
         } else {
             // Envoi de la requête HTTP en mode asynchrone
-            console.log($this.attr('action'));
             $.ajax({
                 url: '/planRonde', // Le nom du fichier indiqué dans le formulaire
                 type: 'POST', // La méthode indiquée dans le formulaire (get ou post)
-                data: {date: date, ronde: idRonde}, // Je sérialise les données (j'envoie toutes les valeurs présentes dans le formulaire)
+                data: {date: date, ronde: id_ronde}, // Je sérialise les données (j'envoie toutes les valeurs présentes dans le formulaire)
                 success: function (html) { // Je récupère la réponse
                     if (html === 'OK') {
-                        $('#addRonde').modal('hide');
+                        $('#planRonde').modal('hide');
                         location.reload();
                     } else {
                         alert(html);
@@ -39,6 +36,7 @@ $(document).ready(function () {
                 }
             });
         }
+        $('#planRonde').modal('hide');
     });
     $('#removePlannedRonde').on('show.bs.modal', function (e) {
         var ronde_id = e.relatedTarget.dataset.id;

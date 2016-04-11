@@ -29,9 +29,7 @@ router.post('/', function (req, res, next) {
             connection.end();
             res.send(status);
         }
-        console.log('je passe la');
         connection.query('INSERT INTO rondeXDate(id_ronde, date_ronde) values (?, ?)', [ronde, date], function(err, rows, fields) {
-            console.log(err);
             if (err) {
                 display_error(err);
             } else {
