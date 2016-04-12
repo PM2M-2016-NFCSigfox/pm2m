@@ -16,3 +16,5 @@ insert into rondeXDate (id_ronde_x_date, id_ronde, date_ronde) values (1, 1, '20
 (3, 1, '2016-4-5'),
 (4, 1, '2016-4-12'),
 (5, 1, '2016-4-19');
+
+insert into badgeage (id_garde, id_pdc, id_ronde_x_date, date_badgeage) values (1, '1C178',1, '2016-3-22');
