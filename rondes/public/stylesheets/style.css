@@ -18,3 +18,7 @@ a {
 .btn {
     margin: 2px;
 }
+
+.modal {
+    position: fixed;
+}

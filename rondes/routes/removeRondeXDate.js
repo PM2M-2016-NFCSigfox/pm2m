@@ -5,7 +5,7 @@ var router = express.Router();
 /* GET home page. */
 router.post('/', function (req, res, next) {
     var id_ronde = req.body.idronde;
-    
+
     if (!id_ronde) {
         res.send('Not enough valid parameters: '+JSON.stringify({ idronde : id_ronde}));
     } else {

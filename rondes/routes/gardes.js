@@ -53,7 +53,7 @@ router.get('/', function(req, res, next) {
                             nfc: garde.id_tag,
                             nfcQr : qr.imageSync(garde.id_tag, { type: 'png' }).toString('base64'),
                             rondes: rondesDuGarde,
-                            dernierBadgeage: garde.date_badgeage != null? moment(garde.date_badgeage).locale("fr").format("DD MMMM YYYY") : ""
+                            dernierBadgeage: garde.date_badgeage != null? moment(garde.date_badgeage).locale("fr").format("dddd DD MMMM YYYY") : ""
                         }
 
                         gardesArray.push(gardeJson);

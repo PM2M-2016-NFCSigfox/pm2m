@@ -1,6 +1,7 @@
 var express = require('express');
 var config = require('../conf.json');
 var router = express.Router();
+var moment = require('moment');
 
 /* GET home page. */
 router.get('/', function (req, res, next) {
@@ -8,9 +9,6 @@ router.get('/', function (req, res, next) {
         console.log('Error during processing: \n\t', errP);
         res.render('index', {
             title: 'Rondes state Error',
-            id: idP,
-            data: dataP,
-            time: timeP,
             error: errP
         });
     }
@@ -81,7 +79,7 @@ router.get('/', function (req, res, next) {
                                     plannedRondes.push({
                                         id_ronde_x_date: ronde.id_ronde_x_date,
                                         nom_ronde: infoRondes[ronde.id_ronde].nom_ronde,
-                                        date_ronde: ronde.date_ronde.toDateString(),
+                                        date_ronde: ronde.date_ronde != null? moment(ronde.date_ronde).locale("fr").format("dddd DD MMMM YYYY") : "",//ronde.date_ronde.toDateString(),
                                         state: state
                                     });
                                 } else {
