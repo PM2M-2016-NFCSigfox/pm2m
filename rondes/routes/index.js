@@ -61,7 +61,7 @@ router.get('/', function (req, res, next) {
     }
 
     function getRondeXdate() {
-        connection.query('SELECT * FROM rondeXDate', [], function (err, rondesXDate, fields) {
+        connection.query('SELECT * FROM rondeXDate ORDER BY date_ronde ASC', [], function (err, rondesXDate, fields) {
             if (!err) {
                 rondesXDate.forEach(function (ronde) {
                     connection.query('SELECT count(id_pdc) as nb_pdc FROM pointDeControle WHERE id_ronde = ?', [ronde.id_ronde], function (err, nb_pdc, fields) {
@@ -73,6 +73,8 @@ router.get('/', function (req, res, next) {
                                         state = "OK";
                                     } else if (rows.nb_badgeage > 0) {
                                         state = "WIP";
+                                    } else if (ronde.date_ronde < new Date()) {
+                                        state = "KO";
                                     } else {
                                         state = "TODO";
                                     }

@@ -66,6 +66,8 @@ block content
                         td
                             if plannedRonde.state=="OK"
                                 span.label.label-success #{plannedRonde.state}
+                            else if plannedRonde.state=="KO"
+                                    span.label.label-warning #{plannedRonde.state}
                             else
                                 span.label.label-primary #{plannedRonde.state}
                         td
